@@ -15,7 +15,7 @@ def start(message):
             telebot.types.KeyboardButton("3"))
 
     msg = bot.send_message(message.chat.id,
-                           f'Сколько у вас оппонентов, <b>{message.from_user.first_name}</b>, ?',
+                           f'Сколько у вас оппонентов, <b>{message.from_user.first_name}</b>?',
                            parse_mode='html', reply_markup=rmk)
     bot.register_next_step_handler(msg, first_answer)
 
@@ -31,7 +31,7 @@ def info(message):
 
 def first_answer(message):
     msg = bot.send_message(message.chat.id,
-                           f'Какие у вас карты, <b>{message.from_user.first_name}</b>, ?',
+                           f'Какие у вас карты, <b>{message.from_user.first_name}</b>?',
                            parse_mode='html')
     if message.text == "1":
         file = "one_opponent.txt"
