@@ -1,3 +1,5 @@
+import ast
+
 import telebot
 import json
 import config
@@ -31,15 +33,13 @@ def first_answer(message):
     msg = bot.send_message(message.chat.id,
                            f'Какие у вас карты, <b>{message.from_user.first_name}</b>, ?',
                            parse_mode='html')
-    if message.text == '1':
-        file = 'one_opponent.txt'
-        bot.register_next_step_handler(msg, file, second_answer)
-    elif message.text == '2':
-        file = 'two_opponents.txt'
-        bot.register_next_step_handler(msg, file)
-    elif message.text == 'three':
-        file = 'three_opponents.txt'
-        bot.register_next_step_handler(msg, file)
+    if message.text == "1":
+        file = "one_opponent.txt"
+    if message.text == "2":
+        file = "two_opponents.txt"
+    elif message.text == "3":
+        file = "three_opponents.txt"
+    bot.register_next_step_handler(msg, second_answer, file)
 
     telebot.types.ReplyKeyboardRemove(selective=False)
 
@@ -47,9 +47,9 @@ def first_answer(message):
 def second_answer(message, file):
     with open(file) as f:
         data = f.read()
-    js = json.loads(data)
-    if js.get(message.text):
-        bot.send_message(message.chat.id, js.get(message.text), parse_mode='html')
+    d = ast.literal_eval(data)
+    if d.get(message.text):
+        bot.send_message(message.chat.id, d.get(message.text), parse_mode='html')
     else:
         bot.send_message(message.chat.id, "Неправильный формат/Слишком слабые карты :)", parse_mode='html')
 
