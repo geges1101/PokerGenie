@@ -1,7 +1,6 @@
 import ast
 
 import telebot
-import json
 import config
 
 bot = telebot.TeleBot(config.TOKEN)
@@ -32,7 +31,7 @@ def info(message):
 def first_answer(message):
     msg = bot.send_message(message.chat.id,
                            f'Какие у вас карты, <b>{message.from_user.first_name}</b>?',
-                           parse_mode='html')
+                           parse_mode='html', reply_markup=telebot.types.ReplyKeyboardRemove())
     if message.text == "1":
         file = "one_opponent.txt"
     if message.text == "2":
@@ -40,8 +39,6 @@ def first_answer(message):
     elif message.text == "3":
         file = "three_opponents.txt"
     bot.register_next_step_handler(msg, second_answer, file)
-
-    telebot.types.ReplyKeyboardRemove(selective=False)
 
 
 def second_answer(message, file):
